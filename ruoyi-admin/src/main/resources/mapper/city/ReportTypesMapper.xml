@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.city.mapper.ReportTypesMapper">
+
+    <resultMap type="ReportTypes" id="ReportTypesResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="description"    column="description"    />
+        <result property="status"    column="status"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <resultMap id="ReportTypesReportSubtypesResult" type="ReportTypes" extends="ReportTypesResult">
+        <collection property="reportSubtypesList" ofType="ReportSubtypes" column="id" select="selectReportSubtypesList" />
+    </resultMap>
+
+    <resultMap type="ReportSubtypes" id="ReportSubtypesResult">
+        <result property="id"    column="id"    />
+        <result property="typeId"    column="type_id"    />
+        <result property="name"    column="name"    />
+        <result property="description"    column="description"    />
+        <result property="status"    column="status"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectReportTypesVo">
+        select id, name, description, status, create_time, update_time from report_types
+    </sql>
+
+    <select id="selectReportTypesList" parameterType="ReportTypes" resultMap="ReportTypesResult">
+        <include refid="selectReportTypesVo"/>
+        <where>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="description != null  and description != ''"> and description like concat('%', #{description}, '%')</if>
+            <if test="status != null "> and status = #{status}</if>
+        </where>
+    </select>
+
+    <select id="selectReportTypesById" parameterType="Long" resultMap="ReportTypesReportSubtypesResult">
+        select id, name, description, status, create_time, update_time
+        from report_types
+        where id = #{id}
+    </select>
+
+    <select id="selectReportSubtypesList" resultMap="ReportSubtypesResult">
+        select id, type_id, name, description, status, create_time, update_time
+        from report_subtypes
+        where type_id = #{type_id}
+    </select>
+
+    <insert id="insertReportTypes" parameterType="ReportTypes" useGeneratedKeys="true" keyProperty="id">
+        insert into report_types
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">name,</if>
+            <if test="description != null">description,</if>
+            <if test="status != null">status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="description != null">#{description},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateReportTypes" parameterType="ReportTypes">
+        update report_types
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteReportTypesById" parameterType="Long">
+        delete from report_types where id = #{id}
+    </delete>
+
+    <delete id="deleteReportTypesByIds" parameterType="String">
+        delete from report_types where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="deleteReportSubtypesByTypeIds" parameterType="String">
+        delete from report_subtypes where type_id in
+        <foreach item="typeId" collection="array" open="(" separator="," close=")">
+            #{typeId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteReportSubtypesByTypeId" parameterType="Long">
+        delete from report_subtypes where type_id = #{typeId}
+    </delete>
+
+    <insert id="batchReportSubtypes">
+        insert into report_subtypes( id, type_id, name, description, status) values
+        <foreach item="item" index="index" collection="list" separator=",">
+            ( #{item.id}, #{item.typeId}, #{item.name}, #{item.description}, #{item.status})
+        </foreach>
+    </insert>
+</mapper>

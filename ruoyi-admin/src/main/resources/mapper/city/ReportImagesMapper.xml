@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.city.mapper.ReportImagesMapper">
+    
+    <resultMap type="ReportImages" id="ReportImagesResult">
+        <result property="id"    column="id"    />
+        <result property="reportId"    column="report_id"    />
+        <result property="imageUrl"    column="image_url"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectReportImagesVo">
+        select id, report_id, image_url, create_time from report_images
+    </sql>
+
+    <select id="selectReportImagesList" parameterType="ReportImages" resultMap="ReportImagesResult">
+        <include refid="selectReportImagesVo"/>
+        <where>  
+            <if test="reportId != null "> and report_id = #{reportId}</if>
+        </where>
+    </select>
+    
+    <select id="selectReportImagesById" parameterType="Long" resultMap="ReportImagesResult">
+        <include refid="selectReportImagesVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertReportImages" parameterType="ReportImages" useGeneratedKeys="true" keyProperty="id">
+        insert into report_images
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="reportId != null">report_id,</if>
+            <if test="imageUrl != null and imageUrl != ''">image_url,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="reportId != null">#{reportId},</if>
+            <if test="imageUrl != null and imageUrl != ''">#{imageUrl},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateReportImages" parameterType="ReportImages">
+        update report_images
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="reportId != null">report_id = #{reportId},</if>
+            <if test="imageUrl != null and imageUrl != ''">image_url = #{imageUrl},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteReportImagesById" parameterType="Long">
+        delete from report_images where id = #{id}
+    </delete>
+
+    <delete id="deleteReportImagesByIds" parameterType="String">
+        delete from report_images where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

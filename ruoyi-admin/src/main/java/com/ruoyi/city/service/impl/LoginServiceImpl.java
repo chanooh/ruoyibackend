@@ -1,0 +1,79 @@
+package com.ruoyi.city.service.impl;
+
+import com.ruoyi.city.domain.LoginRequest;
+import com.ruoyi.city.domain.Users;
+import com.ruoyi.city.service.ILoginService;
+import com.ruoyi.city.service.IUsersService;
+import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.core.domain.model.LoginUser;
+import com.ruoyi.common.utils.StringUtils;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+
+import java.util.*;
+@Service
+public class LoginServiceImpl implements ILoginService {
+
+    @Autowired
+    private IUsersService usersService;
+
+    @Value("${token.secret}")
+    private String secret;
+
+    @Override
+    public AjaxResult login(LoginRequest request) {
+
+        if (StringUtils.isEmpty(request.getUsername()) || StringUtils.isEmpty(request.getPassword())) {
+            return AjaxResult.error("用户名或密码不能为空");
+        }
+
+        Users user = usersService.selectUserByUsername(request.getUsername());
+        if (user == null) {
+            return AjaxResult.error("用户不存在");
+        }
+
+        if (!Objects.equals(request.getPassword(), user.getPassword())) {
+            return AjaxResult.error("密码错误");
+        }
+
+        // 生成 JWT token
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("userId", user.getId());
+        claims.put("username", user.getUsername());
+        claims.put("role", user.getRole());
+        claims.put("iat", new Date());
+        claims.put("exp", new Date(System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000));
+
+        String token = createToken(claims);
+
+        // 返回响应
+        Map<String, Object> result = new HashMap<>();
+        result.put("token", token);
+        result.put("userInfo", buildUserInfo(user));
+
+        return AjaxResult.success(result);
+
+
+    }
+
+    private String createToken(Map<String, Object> claims) {
+        return Jwts.builder()
+                .setClaims(claims)
+                .signWith(SignatureAlgorithm.HS512, secret)
+                .compact();
+    }
+
+    private Map<String, Object> buildUserInfo(Users user) {
+        return new HashMap<String, Object>(){{
+            put("userId", user.getId());
+            put("username", user.getUsername());
+            put("role", user.getRole());
+            put("phone", user.getPhone());
+        }};
+    }
+
+}
