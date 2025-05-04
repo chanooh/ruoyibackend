@@ -71,6 +71,9 @@ public class LoginUser implements UserDetails
      */
     private SysUser user;
 
+    private String username;
+    private String userType; // 用户类型：admin/field
+
     public LoginUser()
     {
     }
@@ -129,7 +132,16 @@ public class LoginUser implements UserDetails
     @Override
     public String getUsername()
     {
-        return user.getUserName();
+        if (user != null) {
+            return user.getUserName();
+        } else {
+            return this.username;
+        }
+
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     /**
@@ -256,6 +268,17 @@ public class LoginUser implements UserDetails
     public void setUser(SysUser user)
     {
         this.user = user;
+    }
+
+    public String getUserType() {
+        return userType;
+    }
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
+
+    public boolean isField() {
+        return "field".equals(userType);
     }
 
     @Override

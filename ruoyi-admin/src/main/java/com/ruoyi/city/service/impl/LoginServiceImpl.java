@@ -7,6 +7,7 @@ import com.ruoyi.city.service.IUsersService;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.model.LoginUser;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.framework.web.service.TokenService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,9 @@ public class LoginServiceImpl implements ILoginService {
 
     @Autowired
     private IUsersService usersService;
+
+    @Autowired
+    private TokenService tokenService;
 
     @Value("${token.secret}")
     private String secret;
@@ -41,15 +45,15 @@ public class LoginServiceImpl implements ILoginService {
         }
 
         // 生成 JWT token
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("userId", user.getId());
-        claims.put("username", user.getUsername());
-        claims.put("role", user.getRole());
-        claims.put("iat", new Date());
-        claims.put("exp", new Date(System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000));
+//        Map<String, Object> claims = new HashMap<>();
+//        claims.put("userId", user.getId());
+//        claims.put("username", user.getUsername());
+//        claims.put("role", user.getRole());
+//        claims.put("iat", new Date());
+//        claims.put("exp", new Date(System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000));
 
-        String token = createToken(claims);
-
+//        String token = createToken(claims);
+        String token = tokenService.createToken(getLoginUser(user));
         // 返回响应
         Map<String, Object> result = new HashMap<>();
         result.put("token", token);
@@ -74,6 +78,14 @@ public class LoginServiceImpl implements ILoginService {
             put("role", user.getRole());
             put("phone", user.getPhone());
         }};
+    }
+
+    public LoginUser getLoginUser(Users user) {
+        LoginUser loginUser = new LoginUser();
+        loginUser.setUserType("field");
+        loginUser.setUserId(user.getId());
+        loginUser.setUsername(user.getUsername());
+        return loginUser;
     }
 
 }
