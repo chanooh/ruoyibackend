@@ -75,7 +75,17 @@
       <el-table-column label="用户名" align="center" prop="username" />
       <el-table-column label="角色" align="center" prop="role">
         <template slot-scope="scope">
-          {{ scope.row.role === 'field' ? '外业人员' : '管理员' }}
+          {{
+            {
+              'field': '外业人员',
+              'admin': '管理员',
+              'road_quality_group': '道路品质组',
+              'lighting_quality_group': '照明品质组', 
+              'city_appearance_group': '市容品质组',
+              'landscape_group': '园林品质组',
+              'block_quality_group': '街区品质组'
+            }[scope.row.role] || '未知角色'
+          }}
         </template>
       </el-table-column>
       <el-table-column label="手机号" align="center" prop="phone" />
@@ -125,6 +135,13 @@
           <el-select v-model="form.role" placeholder="请选择角色" style="width: 100%;">
             <el-option label="外业人员" value="field"></el-option>
             <el-option label="管理员" value="admin"></el-option>
+
+                <!-- 新增品质工作组 -->
+            <el-option label="道路品质组" value="road_quality_group"></el-option>
+            <el-option label="照明品质组" value="lighting_quality_group"></el-option>
+            <el-option label="市容品质组" value="city_appearance_group"></el-option>
+            <el-option label="园林品质组" value="landscape_group"></el-option>
+            <el-option label="街区品质组" value="block_quality_group"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="手机号" prop="phone">

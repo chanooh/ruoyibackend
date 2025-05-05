@@ -117,6 +117,13 @@
             @click="handleDelete(scope.row)"
             v-hasPermi="['city:reports:remove']"
           >删除</el-button>
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-share"
+            @click="handleAssign(scope.row)"
+            v-hasPermi="['city:reports:assign']"
+          >分配</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -201,11 +208,44 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
+
+    <!-- 分配对话框 -->
+    <el-dialog title="工单分配" :visible.sync="assignVisible" width="500px">
+      <el-form ref="assignForm" :model="assignForm" label-width="80px">
+        <el-form-item label="分配目标" prop="role">
+          <el-select 
+            v-model="assignForm.role"
+            placeholder="请选择工作组"
+            style="width: 100%"
+          >
+            <el-option
+              v-for="item in workGroups"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="处理时限" prop="deadline">
+          <el-date-picker
+            v-model="assignForm.deadline"
+            type="datetime"
+            placeholder="选择截止时间"
+            value-format="yyyy-MM-dd HH:mm:ss"
+            style="width: 100%"
+          />
+        </el-form-item>
+      </el-form>
+      <div slot="footer">
+        <el-button @click="assignVisible = false">取消</el-button>
+        <el-button type="primary" @click="submitAssign">确认分配</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { listReports, getReports, delReports, addReports, updateReports } from "@/api/city/reports";
+import { listReports, getReports, delReports, addReports, updateReports, assignReport } from "@/api/city/reports";
 
 export default {
   name: "Reports",
@@ -275,8 +315,21 @@ export default {
         status: [
           { required: true, message: "状态不能为空", trigger: "change" }
         ]
-      }
-    };
+      },
+      assignVisible: false,
+      assignForm: {
+        reportId: null,
+        role: null,
+        deadline: null
+      },
+      workGroups: [
+        { value: 'road_quality_group', label: '道路品质组' },
+        { value: 'lighting_quality_group', label: '照明品质组' },
+        { value: 'city_appearance_group', label: '市容品质组' },
+        { value: 'landscape_group', label: '园林品质组' },
+        { value: 'block_quality_group', label: '街区品质组' }
+      ]
+      };
   },
   created() {
     this.getList();
@@ -430,6 +483,29 @@ export default {
     /** 处理图片加载失败 */
     handleImageError() {
       console.log('图片加载失败');
+    },
+
+
+    handleAssign(row) {
+      this.assignForm = {
+        // reportId: row.id,
+        role: row.assigned_to || null,
+        deadline: null
+      }
+      this.assignVisible = true
+    },
+
+    submitAssign() {
+      console.log(123)
+      this.$refs.assignForm.validate(valid => {
+        if (valid) {
+          assignReport(this.assignForm).then(response => {
+            this.$modal.msgSuccess("分配成功")
+            this.assignVisible = false
+            this.getList()
+          })
+        }
+      })
     }
   }
 };
