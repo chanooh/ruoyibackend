@@ -18,8 +18,9 @@ server:
   # 服务器的HTTP端口，默认为8080  8087
   port: 8080
   servlet:
-    # 应用的访问路径   urbanplus
+    # 应用的访问路径   /urbanplus/
     context-path: /
+#    context-path: /urbanplus/
   tomcat:
     # tomcat的URI编码
     uri-encoding: UTF-8
