@@ -212,9 +212,9 @@
     <!-- 分配对话框 -->
     <el-dialog title="工单分配" :visible.sync="assignVisible" width="500px">
       <el-form ref="assignForm" :model="assignForm" label-width="80px">
-        <el-form-item label="分配目标" prop="role">
+        <el-form-item label="分配目标" prop="assignedTo">
           <el-select 
-            v-model="assignForm.role"
+            v-model="assignForm.assignedTo"
             placeholder="请选择工作组"
             style="width: 100%"
           >
@@ -226,9 +226,9 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="处理时限" prop="deadline">
+        <el-form-item label="处理时限" prop="assignedTime">
           <el-date-picker
-            v-model="assignForm.deadline"
+            v-model="assignForm.assignedTime"
             type="datetime"
             placeholder="选择截止时间"
             value-format="yyyy-MM-dd HH:mm:ss"
@@ -317,11 +317,7 @@ export default {
         ]
       },
       assignVisible: false,
-      assignForm: {
-        reportId: null,
-        role: null,
-        deadline: null
-      },
+      assignForm: {},
       workGroups: [
         { value: 'road_quality_group', label: '道路品质组' },
         { value: 'lighting_quality_group', label: '照明品质组' },
@@ -367,7 +363,7 @@ export default {
         longitude: null,
         status: 'pending', // 默认待处理
         createTime: null,
-        updateTime: null
+        updateTime: null,
       };
       this.reportImagesList = [];
       this.checkedReportImages = [];
@@ -489,8 +485,9 @@ export default {
     handleAssign(row) {
       this.assignForm = {
         // reportId: row.id,
-        role: row.assigned_to || null,
-        deadline: null
+        ...row,
+        // role: row.assigned_to || null,
+        // deadline: null
       }
       this.assignVisible = true
     },

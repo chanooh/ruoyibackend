@@ -178,7 +178,7 @@ Router.prototype.replace = function push(location) {
 
 export default new Router({
   mode: 'history', // 去掉url中的#
-  base: '/urbanplusadmin/',
+  // base: '/urbanplusadmin/', //打包
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes
 })

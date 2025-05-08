@@ -45,8 +45,8 @@ export function delReports(id) {
 
 export function assignReport(data) {
   return request({
-    url: '/city/reports/assign',
-    method: 'post',
+    url: '/city/api/assign',
+    method: 'put',
     data: data
   })
 }

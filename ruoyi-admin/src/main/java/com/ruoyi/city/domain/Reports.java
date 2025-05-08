@@ -1,6 +1,7 @@
 package com.ruoyi.city.domain;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -49,6 +50,10 @@ public class Reports extends BaseEntity
     /** 状态：pending-待处理, processing-处理中, completed-已完成, rejected-已拒绝 */
     @Excel(name = "状态：pending-待处理, processing-处理中, completed-已完成, rejected-已拒绝")
     private String status;
+
+    private Long assignedBy;
+    private String assignedTo;
+    private Date assignedTime;
 
     /** 工单图片信息 */
     private List<ReportImages> reportImagesList;
@@ -153,6 +158,30 @@ public class Reports extends BaseEntity
         this.reportImagesList = reportImagesList;
     }
 
+    public Long getAssignedBy() {
+        return assignedBy;
+    }
+
+    public void setAssignedBy(Long assignedBy) {
+        this.assignedBy = assignedBy;
+    }
+
+    public String getAssignedTo() {
+        return assignedTo;
+    }
+
+    public void setAssignedTo(String assignedTo) {
+        this.assignedTo = assignedTo;
+    }
+
+    public Date getAssignedTime() {
+        return assignedTime;
+    }
+
+    public void setAssignedTime(Date assignedTime) {
+        this.assignedTime = assignedTime;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
@@ -168,6 +197,9 @@ public class Reports extends BaseEntity
             .append("createTime", getCreateTime())
             .append("updateTime", getUpdateTime())
             .append("reportImagesList", getReportImagesList())
+            .append("assignedBy",getAssignedBy())
+            .append("assignedTo",getAssignedTo())
+            .append("assignedTime",getAssignedTime())
             .toString();
     }
 }

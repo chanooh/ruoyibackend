@@ -6,3 +6,10 @@ ALTER TABLE reports
 ADD COLUMN assigned_to VARCHAR(50) COMMENT '分配目标角色',
 ADD COLUMN assigned_by BIGINT COMMENT '分配人ID',
 ADD COLUMN assigned_time DATETIME COMMENT '分配时间';
+
+打包要改
+.env
+.env.prod
+vue.config
+
+src/router

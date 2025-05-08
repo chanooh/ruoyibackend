@@ -4,7 +4,6 @@ package com.ruoyi.city.controller;
 
 
 import com.ruoyi.city.domain.Reports;
-import com.ruoyi.city.service.ICityService;
 import com.ruoyi.city.service.IReportsService;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -18,7 +17,7 @@ import static com.ruoyi.common.core.domain.AjaxResult.success;
 
 @RestController
 @RequestMapping("/city/api")
-public class CityApiController extends BaseController {
+public class MiniReportsController extends BaseController {
 
     @Autowired
     private IReportsService reportsService;
@@ -37,12 +36,12 @@ public class CityApiController extends BaseController {
         return getDataTable(list);
     }
 
-    @PostMapping("/assign")
-    public AjaxResult submit(@RequestBody Reports reports)
-    {
-        return toAjax(reportsService.insertReports(reports));
-    }
 
+    @PutMapping("/assign")
+    public AjaxResult assign(@RequestBody Reports reports)
+    {
+        return toAjax(reportsService.updateReports(reports));
+    }
 
 
 }
