@@ -37,5 +37,12 @@ public class CityApiController extends BaseController {
         return getDataTable(list);
     }
 
+    @PostMapping("/assign")
+    public AjaxResult submit(@RequestBody Reports reports)
+    {
+        return toAjax(reportsService.insertReports(reports));
+    }
+
+
 
 }
