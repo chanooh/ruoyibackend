@@ -42,7 +42,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectReportsVo">
-        select id, user_id, type_id, title, description, address, latitude, longitude, status, create_time, update_time from reports
+        select id, user_id, type_id, title, description, address, latitude, longitude, status, create_time, update_time, assigned_to, assigned_by, assigned_time from reports
     </sql>
 
     <select id="selectReportsList" parameterType="Reports" resultMap="ReportsWithImagesResult">
@@ -75,7 +75,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectReportsListByUserId" parameterType="Long" resultMap="ReportsWithImagesResult">
         <include refid="selectReportsVo"/>
-        where user_id = #{userId}
+        <where>
+            <if test="userId != null">user_id = #{userId}</if>
+            <if test="assignedTo != null">and assigned_to = #{assignedTo}</if>
+        </where>
         order by create_time desc
     </select>
 

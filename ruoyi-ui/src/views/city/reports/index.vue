@@ -82,6 +82,14 @@
           {{ statusMap[scope.row.status] || scope.row.status }}
         </template>
       </el-table-column>
+      <el-table-column label="分配状态" align="center">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.assignedTo" type="success">
+            {{ groupFormatter(scope.row.assignedTo) }}
+          </el-tag>
+          <el-tag v-else type="info">未分配</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column label="图片" align="center">
         <template slot-scope="scope">
           <div v-if="scope.row.imageUrls && scope.row.imageUrls.length">
@@ -503,6 +511,10 @@ export default {
           })
         }
       })
+    },
+    groupFormatter(value) {
+      const group = this.workGroups.find(item => item.value === value)
+      return group ? group.label : '未知工作组'
     }
   }
 };

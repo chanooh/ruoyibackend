@@ -32,7 +32,7 @@ public class MiniReportsController extends BaseController {
     public TableDataInfo list(Reports reports)
     {
         startPage();
-        List<Reports> list = reportsService.selectReportsListByUserId(reports.getUserId());
+        List<Reports> list = reportsService.selectReportsListByUserId(reports);
         return getDataTable(list);
     }
 

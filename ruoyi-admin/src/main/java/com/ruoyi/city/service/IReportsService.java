@@ -59,12 +59,7 @@ public interface IReportsService
      */
     public int deleteReportsById(Long id);
 
-    /**
-     * 通过用户id 倒序获取工单
-     *
-     * @param userId 用户ID
-     * @return 结果
-     */
-    List<Reports> selectReportsListByUserId(Long userId);
+
+    List<Reports> selectReportsListByUserId(Reports reports);
 
 }

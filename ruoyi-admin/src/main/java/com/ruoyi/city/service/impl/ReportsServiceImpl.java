@@ -133,8 +133,8 @@ public class ReportsServiceImpl implements IReportsService
     }
 
     @Override
-    public List<Reports> selectReportsListByUserId(Long userId)
+    public List<Reports> selectReportsListByUserId(Reports reports)
     {
-        return reportsMapper.selectReportsListByUserId(userId);
+        return reportsMapper.selectReportsListByUserId(reports);
     }
 }
