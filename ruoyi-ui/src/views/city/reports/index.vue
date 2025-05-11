@@ -132,6 +132,13 @@
             @click="handleAssign(scope.row)"
             v-hasPermi="['city:reports:assign']"
           >分配</el-button>
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-upload"
+            @click="handle12345Submit(scope.row)"
+            v-hasPermi="['city:reports:12345']"
+          >提交12345</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -259,6 +266,7 @@ export default {
   name: "Reports",
   data() {
     return {
+      apiRoot: "",
       // 遮罩层
       loading: true,
       // 选中数组
@@ -515,7 +523,21 @@ export default {
     groupFormatter(value) {
       const group = this.workGroups.find(item => item.value === value)
       return group ? group.label : '未知工作组'
-    }
+    },
+    handle12345Submit(row) {
+      this.$modal.confirm('是否确认提交工单到12345平台？').then(() => {
+        // this.$axios.post(`${this.apiRoot}/12345_inter/handlerProcess/channelAddOrder`, {
+        //   orderId: row.id,
+        //   title: row.title,
+        //   address: row.address
+        // }).then(response => {
+        //   this.$modal.msgSuccess("提交成功");
+        //   this.getList();
+        // }).catch(error => {
+        //   this.$modal.msgError("提交失败：" + error.response.data.msg);
+        // });
+      }).catch(() => {});
+  }
   }
 };
 </script>

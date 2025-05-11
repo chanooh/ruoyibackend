@@ -27,10 +27,10 @@ public class OssUploadController {
             }
 
             // 校验文件类型
-            String contentType = file.getContentType();
-            if (!Arrays.asList("image/jpeg", "image/png").contains(contentType)) {
-                return AjaxResult.error("仅支持JPG/PNG格式");
-            }
+//            String contentType = file.getContentType();
+//            if (!Arrays.asList("image/jpeg", "image/png").contains(contentType)) {
+//                return AjaxResult.error("仅支持JPG/PNG格式");
+//            }
 
             // 上传到OSS
             String url = ossService.upload(file);

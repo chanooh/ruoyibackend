@@ -3,6 +3,8 @@ package com.ruoyi.city.domain;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
@@ -53,6 +55,8 @@ public class Reports extends BaseEntity
 
     private Long assignedBy;
     private String assignedTo;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date assignedTime;
 
     /** 工单图片信息 */
