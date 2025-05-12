@@ -28,16 +28,16 @@ public class OssServiceImpl implements OssService {
 
     @Override
     public String upload(MultipartFile file) {
-        // 生成唯一文件名
+        // 生成文件名
         String originalFilename = file.getOriginalFilename();
         String fileType = originalFilename.substring(originalFilename.lastIndexOf("."));
         String fileName = UUID.randomUUID() + fileType;
 
-        // 创建OSS客户端
+        // OSS客户端
         OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
 
         try {
-            // 上传文件流
+            // 文件流
             ossClient.putObject(bucketName, fileName, file.getInputStream());
 
             // 返回完整访问路径

@@ -44,15 +44,6 @@ public class LoginServiceImpl implements ILoginService {
             return AjaxResult.error("密码错误");
         }
 
-        // 生成 JWT token
-//        Map<String, Object> claims = new HashMap<>();
-//        claims.put("userId", user.getId());
-//        claims.put("username", user.getUsername());
-//        claims.put("role", user.getRole());
-//        claims.put("iat", new Date());
-//        claims.put("exp", new Date(System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000));
-
-//        String token = createToken(claims);
         String token = tokenService.createToken(getLoginUser(user));
         // 返回响应
         Map<String, Object> result = new HashMap<>();

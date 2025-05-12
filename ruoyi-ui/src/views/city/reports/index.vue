@@ -527,9 +527,9 @@ export default {
     handle12345Submit(row) {
       this.$modal.confirm('是否确认提交工单到12345平台？').then(() => {
         // this.$axios.post(`${this.apiRoot}/12345_inter/handlerProcess/channelAddOrder`, {
-        //   orderId: row.id,
+        //   
         //   title: row.title,
-        //   address: row.address
+        //   
         // }).then(response => {
         //   this.$modal.msgSuccess("提交成功");
         //   this.getList();
