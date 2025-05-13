@@ -13,10 +13,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="status"    column="status"    />
         <result property="createTime"    column="create_time"    />
         <result property="updateTime"    column="update_time"    />
+        <result property="roleDisplayName" column="role_display_name"/>
     </resultMap>
 
     <sql id="selectUsersVo">
-        select id, username, password, role, phone, status, create_time, update_time from users
+        SELECT
+        u.id, u.username, u.password, u.role, u.phone, u.status, u.create_time, u.update_time,
+        r.display_name AS role_display_name
+        FROM users u
+        LEFT JOIN roles r ON u.role = r.name
     </sql>
 
     <select id="selectUsersList" parameterType="Users" resultMap="UsersResult">

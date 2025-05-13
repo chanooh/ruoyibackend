@@ -37,6 +37,15 @@ public class Users extends BaseEntity
     @Excel(name = "状态：0-禁用, 1-启用")
     private Long status;
 
+    private String roleDisplayName;
+
+    public void setRoleDisplayName(String roleDisplayName) {
+        this.roleDisplayName = roleDisplayName;
+    }
+    public String getRoleDisplayName() {
+        return this.roleDisplayName;
+    }
+
     public void setId(Long id) 
     {
         this.id = id;

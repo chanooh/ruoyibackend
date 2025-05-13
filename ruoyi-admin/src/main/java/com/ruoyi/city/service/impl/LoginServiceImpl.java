@@ -72,6 +72,7 @@ public class LoginServiceImpl implements ILoginService {
             put("username", user.getUsername());
             put("role", user.getRole());
             put("phone", user.getPhone());
+            put("roleDisplayName", user.getRoleDisplayName());
         }};
     }
 
