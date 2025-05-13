@@ -233,11 +233,11 @@
             placeholder="请选择工作组"
             style="width: 100%"
           >
-            <el-option
-              v-for="item in workGroups"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+          <el-option
+              v-for="item in rolesOptions"
+              :key="item.code"
+              :label="item.displayName"
+              :value="item.name"
             />
           </el-select>
         </el-form-item>
@@ -248,6 +248,7 @@
             placeholder="选择截止时间"
             value-format="yyyy-MM-dd HH:mm:ss"
             style="width: 100%"
+            :disabled="true"
           />
         </el-form-item>
       </el-form>
@@ -261,7 +262,7 @@
 
 <script>
 import { listReports, getReports, delReports, addReports, updateReports, assignReport } from "@/api/city/reports";
-
+import { listRoles } from "@/api/city/roles";
 export default {
   name: "Reports",
   data() {
@@ -340,11 +341,13 @@ export default {
         { value: 'city_appearance_group', label: '市容品质组' },
         { value: 'landscape_group', label: '园林品质组' },
         { value: 'block_quality_group', label: '街区品质组' }
-      ]
+      ],
+      rolesOptions: [], // 存放后端获取的角色列表
       };
   },
   created() {
     this.getList();
+    this.getRoles();
   },
   methods: {
     /** 查询工单管理列表 */
@@ -520,9 +523,9 @@ export default {
         }
       })
     },
-    groupFormatter(value) {
-      const group = this.workGroups.find(item => item.value === value)
-      return group ? group.label : '未知工作组'
+    groupFormatter(roleName) {
+      const role = this.rolesOptions.find(r => r.name === roleName);
+      return role ? role.displayName : '未知角色';
     },
     handle12345Submit(row) {
       this.$modal.confirm('是否确认提交工单到12345平台？').then(() => {
@@ -537,7 +540,14 @@ export default {
         //   this.$modal.msgError("提交失败：" + error.response.data.msg);
         // });
       }).catch(() => {});
-  }
+    },
+    getRoles() {
+      listRoles().then(response => {
+        console.log(response)
+        this.rolesOptions = response.rows;
+        console.log(this.rolesOptions)
+      });
+    }
   }
 };
 </script>

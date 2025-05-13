@@ -1,24 +1,31 @@
-## 城市品质提升
+## 城市品质提升说明
 
-ruoyi-admin 后台接口&小程序接口
+主要包含以下两部分：
+
+- **ruoyi-admin**：后台管理接口 & 小程序接口
+- **ruoyi-ui**：后台管理系统前端 UI
+
+---
+
+## 后台 UI 打包（ruoyi-ui）
+
+1. **设置路由基础路径**  
+   若需要则修改文件：`/src/router/index.js`
+   目前的部署需要改为： `/urbanplusadmin/`
 
 
-ruoyi-ui 后台ui
+```
+export default new Router({
+  mode: 'history',
+  base: '/urbanplusadmin/', //打包
+  scrollBehavior: () => ({ y: 0 }),
+  routes: constantRoutes
+})
+```
 
-## 后台ui打包
 
-路由baseurl设置： /src/router/index.js
+2. **执行打包命令**
+   ```bash
+   npm run build:prod
 
-请求baseurl设置： env
-
-vue.config.js 设置 publicPath
-
-最后执行npm run build:prod
-
-## h5打包
-
-若要修改运行基础路径，修改manifest.json-web配置-运行基础路径
-
-目前基础路径为/urbanplus/
-
-utils/request 设置请求baseurl
+---
