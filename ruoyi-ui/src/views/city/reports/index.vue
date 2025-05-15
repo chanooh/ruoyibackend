@@ -525,7 +525,7 @@ export default {
     },
     groupFormatter(roleName) {
       const role = this.rolesOptions.find(r => r.name === roleName);
-      return role ? role.displayName : '未知角色';
+      return role ? role.displayName : '未知';
     },
     handle12345Submit(row) {
       this.$modal.confirm('是否确认提交工单到12345平台？').then(() => {

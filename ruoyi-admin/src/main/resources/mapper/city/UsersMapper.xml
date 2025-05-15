@@ -33,10 +33,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="status != null "> and status = #{status}</if>
         </where>
     </select>
-    
+
     <select id="selectUsersById" parameterType="Long" resultMap="UsersResult">
         <include refid="selectUsersVo"/>
-        where id = #{id}
+        WHERE u.id = #{id}
     </select>
 
     <select id="selectUserByUsername" parameterType="String" resultMap="UsersResult">

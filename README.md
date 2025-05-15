@@ -29,3 +29,7 @@ export default new Router({
    npm run build:prod
 
 ---
+
+## 配置 
+
+阿里云oss：application.yml
